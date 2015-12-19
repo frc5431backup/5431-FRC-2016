@@ -5,7 +5,10 @@ import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.vision.USBCamera;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.CameraServer;
 
 /*
  * Welcome to the main code for the FRC 5431 robotics team, this code involves mecanum
@@ -30,6 +33,9 @@ public class Robot extends IterativeRobot
 	
 	//Sensors
 	Gyro gyro;
+	PowerDistributionPanel power;
+	CameraServer camera;
+	USBCamera usbCam;
 	
 	//Arduino Comm
 	static SerialPort serial;
@@ -40,6 +46,24 @@ public class Robot extends IterativeRobot
     	//Wiring
     	serial = new SerialPort(Map.BaudRate, Map.SersPort);
     	Map.lcdWrite(Map.onBoot);
+    	power = new PowerDistributionPanel();
+    	
+    	//Camera (USB part)
+    	usbCam = new USBCamera();
+    	//Settings
+    	usbCam.setFPS(10);
+    	usbCam.setBrightness(50); //50% brightness
+    	usbCam.setExposureAuto();
+    	usbCam.setWhiteBalanceAuto();
+    	
+    	usbCam.updateSettings();
+    	usbCam.openCamera();    //Start capturing
+    	usbCam.startCapture();
+    	
+    	//Camera (Server/Dashboard part)
+    	camera.setQuality(50); //50% quality
+    	camera.setSize(20);
+    	camera.startAutomaticCapture(usbCam);
     	
     	//Joysticks
     	xbox = Joy.xbox;
@@ -69,6 +93,10 @@ public class Robot extends IterativeRobot
     //Called when teleop is on, no loops here or robot will lag, think of it like an arduino
     public void teleopPeriodic() 
     {
+    	if(power.getVoltage() <= 11.5)
+    	{
+    		Map.lcdWrite("Power is low", "Replace battery");
+    	}
     	drive.mecanumDrive_Cartesian(getX(), getY(), getZ(), gyro.getAngle()); //Mecanum drive for robot
     }
     
