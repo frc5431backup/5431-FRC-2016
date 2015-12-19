@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 /*
@@ -30,9 +31,16 @@ public class Robot extends IterativeRobot
 	//Sensors
 	Gyro gyro;
 	
+	//Arduino Comm
+	static SerialPort serial;
+	
 	//Below function is a mapper which is called on robot boot
     public void robotInit() 
     {
+    	//Wiring
+    	serial = new SerialPort(Map.BaudRate, Map.SersPort);
+    	Map.lcdWrite(Map.onBoot);
+    	
     	//Joysticks
     	xbox = Joy.xbox;
     	
@@ -66,28 +74,35 @@ public class Robot extends IterativeRobot
     
     public double getX()
     {
-    	return xbox.getRawAxis(Joy.leftX)*0.8;
+    	double xVal = Math.pow(xbox.getRawAxis(Joy.leftX), Joy.joyPow); //non linear movement
+    	return (xVal)+(Joy.joyEven*(xVal)) ; //Even out the curve just slightly (Same for others below)
     }
     
     public double getY()
     {
-    	return xbox.getRawAxis(Joy.leftY)*0.8;
+    	double yVal = Math.pow(xbox.getRawAxis(Joy.leftY), Joy.joyPow);
+    	return (yVal)+(Joy.joyEven*(yVal));
     }
     
     public double getZ()
     {
-    	xbox.setRumble(Joystick.RumbleType.kLeftRumble, (float) 1);
+    	xbox.setRumble(Joystick.RumbleType.kLeftRumble, (float) 1); //Just for fun
     	xbox.setRumble(Joystick.RumbleType.kRightRumble, (float) 1);
-    	return xbox.getRawAxis(Joy.rightX)*0.85; //Currently the right X axis is going to be our Z axis
+    	double zVal = Math.pow(xbox.getRawAxis(Joy.rightX), Joy.joyPow); //Currently the right X axis is going to be our Z axis
+    	return (zVal)+(Joy.joyEven*(zVal));
     }
     
     public void RobotCalibration()
     {
+    	//Serial line
+    	serial.flush();
+    	serial.reset();
+    	Map.lcdWrite(Map.onConfigone, Map.onConfigtwo);
+    	
     	//Gyro reset
     	gyro.initGyro();//Make sure robot is not moving during boot up period
     	if(gyro.getAngle() != 0) gyro.reset();
     }
-    
     
     //Don't use it at all...
     public void testPeriodic(){}

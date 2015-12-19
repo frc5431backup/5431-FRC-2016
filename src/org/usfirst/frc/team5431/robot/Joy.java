@@ -17,6 +17,9 @@ public class Joy {
 	public static final int rightX = 4;
 	public static final int rightY = 5;
 	
+	//Axis controls
+	public static final int joyPow = 3; //Must be ODD number to accept negatives
+	public static final double joyEven = 0.3; //Amount to even out the curve
 	//End xbox controller mapping
 	
 	
