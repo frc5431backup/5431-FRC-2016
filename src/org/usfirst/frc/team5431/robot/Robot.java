@@ -1,138 +1,124 @@
+
 package org.usfirst.frc.team5431.robot;
 
-import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Gyro;
+import org.usfirst.frc.team5431.robot.commands.Teleop;
+import org.usfirst.frc.team5431.robot.subsystems.DriveBase;
+import org.usfirst.frc.team5431.robot.subsystems.Intake_Subsystem;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.vision.USBCamera;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/*
- * Welcome to the main code for the FRC 5431 robotics team, this code involves mecanum
- * Which includes a Gyro, go ahead and take a look around
- * There are two other files you can look at called Joy = joysticks
- * And Map = Any hardware mapping
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
  */
+public class Robot extends IterativeRobot {
 
-public class Robot extends IterativeRobot 
-	{
+	public static final DriveBase DriveBase = new DriveBase();
+	public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem();
+	
+	public static OI oi;
+
+    Command autonomousCommand;
+    public static Command Intake;
+    SendableChooser chooser;
+    
+    PowerDistributionPanel PDP;
+    
+    
     /**
-     * Place all global vars and objects here
+     * This function is run when the robot is first started up and should be
+     * used for any initialization code.
      */
+    public void robotInit() {
+    	PDP = new PowerDistributionPanel();
+    	PDP.clearStickyFaults();
+		oi = new OI();
+        chooser = new SendableChooser();
+        chooser.addDefault("Default Auto", new Teleop());
+//        chooser.addObject("My Auto", new MyAutoCommand());
+        SmartDashboard.putData("Auto mode", chooser);
+        SmartDashboard.putNumber("Temperature", PDP.getTemperature());
+        SmartDashboard.putNumber("Power", PDP.getTotalPower());
+        
+        
+    }
 	
-	//Joysticks
-	Joystick xbox;
-	
-	
-	//Motor controllers/Drives
-	CANTalon frontLeft, rearLeft, frontRight, rearRight;
-	RobotDrive drive;
-	
-	//Sensors
-	Gyro gyro;
-	PowerDistributionPanel power;
-	CameraServer camera;
-	USBCamera usbCam;
-	
-	//Arduino Comm
-	static SerialPort serial;
-	
-	//Below function is a mapper which is called on robot boot
-    public void robotInit() 
-    {
-    	//Wiring
-    	serial = new SerialPort(Map.BaudRate, Map.SersPort);
-    	Map.lcdWrite(Map.onBoot);
-    	power = new PowerDistributionPanel();
-    	
-    	//Camera (USB part)
-    	usbCam = new USBCamera();
-    	//Settings
-    	usbCam.setFPS(10);
-    	usbCam.setBrightness(50); //50% brightness
-    	usbCam.setExposureAuto();
-    	usbCam.setWhiteBalanceAuto();
-    	
-    	usbCam.updateSettings();
-    	usbCam.openCamera();    //Start capturing
-    	usbCam.startCapture();
-    	
-    	//Camera (Server/Dashboard part)
-    	camera.setQuality(50); //50% quality
-    	camera.setSize(20);
-    	camera.startAutomaticCapture(usbCam);
-    	
-    	//Joysticks
-    	xbox = Joy.xbox;
-    	
-    	//Motor controllers
-    	frontLeft = new CANTalon(Map.FrontLeftMotor);
-    	rearLeft = new CANTalon(Map.RearLeftMotor);
-    	frontRight = new CANTalon(Map.FrontRightMotor);
-    	rearRight = new CANTalon(Map.RearRightMotor);
-    	
-    	//Sensors
-    	gyro = new Gyro(Map.GyroAnalogPort);
-    	
-    	//Robot Drive
-    	drive = new RobotDrive(frontLeft, rearLeft, frontRight, rearRight);
-    	
-    	RobotCalibration(); //Calibrate sensors to start
+	/**
+     * This function is called once each time the robot enters Disabled mode.
+     * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
+     */
+    public void disabledInit(){
 
     }
+	
+	public void disabledPeriodic() {
+		Scheduler.getInstance().run();
+	}
 
-    //Called when auton is on
-    public void autonomousPeriodic() 
-    {
-
-    }
-
-    //Called when teleop is on, no loops here or robot will lag, think of it like an arduino
-    public void teleopPeriodic() 
-    {
-    	if(power.getVoltage() <= 11.5)
-    	{
-    		Map.lcdWrite("Power is low", "Replace battery");
-    	}
-    	drive.mecanumDrive_Cartesian(getX(), getY(), getZ(), gyro.getAngle()); //Mecanum drive for robot
-    }
-    
-    public double getX()
-    {
-    	double xVal = Math.pow(xbox.getRawAxis(Joy.leftX), Joy.joyPow); //non linear movement
-    	return (xVal)+(Joy.joyEven*(xVal)) ; //Even out the curve just slightly (Same for others below)
-    }
-    
-    public double getY()
-    {
-    	double yVal = Math.pow(xbox.getRawAxis(Joy.leftY), Joy.joyPow);
-    	return (yVal)+(Joy.joyEven*(yVal));
-    }
-    
-    public double getZ()
-    {
-    	xbox.setRumble(Joystick.RumbleType.kLeftRumble, (float) 1); //Just for fun
-    	xbox.setRumble(Joystick.RumbleType.kRightRumble, (float) 1);
-    	double zVal = Math.pow(xbox.getRawAxis(Joy.rightX), Joy.joyPow); //Currently the right X axis is going to be our Z axis
-    	return (zVal)+(Joy.joyEven*(zVal));
-    }
-    
-    public void RobotCalibration()
-    {
-    	//Serial line
-    	serial.flush();
-    	serial.reset();
-    	Map.lcdWrite(Map.onConfigone, Map.onConfigtwo);
+	/**
+	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
+	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
+	 * Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box
+	 * below the Gyro
+	 *
+	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
+	 * or additional comparisons to the switch structure below with additional strings & commands.
+	 */
+    public void autonomousInit() {
+        autonomousCommand = (Command) chooser.getSelected();
+        
+		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		switch(autoSelected) {
+		case "My Auto":
+			autonomousCommand = new MyAutoCommand();
+			break;
+		case "Default Auto":
+		default:
+			autonomousCommand = new ExampleCommand();
+			break;
+		} */
     	
-    	//Gyro reset
-    	gyro.initGyro();//Make sure robot is not moving during boot up period
-    	if(gyro.getAngle() != 0) gyro.reset();
+    	// schedule the autonomous command (example)
+        if (autonomousCommand != null) autonomousCommand.start();
+    }
+
+    /**
+     * This function is called periodically during autonomous
+     */
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+    }
+
+    public void teleopInit() {
+    	
+		// This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to 
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        if (autonomousCommand != null) autonomousCommand.cancel();
+    }
+
+    /**
+     * This function is called periodically during operator control
+     */
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
     }
     
-    //Don't use it at all...
-    public void testPeriodic(){}
-    
+    /**
+     * This function is called periodically during test mode
+     */
+    public void testPeriodic() {
+        LiveWindow.run();
+    }
 }
