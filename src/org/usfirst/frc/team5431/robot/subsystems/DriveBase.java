@@ -13,10 +13,10 @@ public class DriveBase extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-    CANTalon frontright = new CANTalon(RobotMap.frontright);
-    CANTalon frontleft = new CANTalon(RobotMap.frontleft);
-    CANTalon rearright = new CANTalon(RobotMap.rearright);
-    CANTalon rearleft = new CANTalon(RobotMap.rearleft);
+    final CANTalon frontright = new CANTalon(RobotMap.frontright),
+    		frontleft = new CANTalon(RobotMap.frontleft),
+    		rearright = new CANTalon(RobotMap.rearright),
+    		rearleft = new CANTalon(RobotMap.rearleft);
     
     public void initDefaultCommand() 
     {
