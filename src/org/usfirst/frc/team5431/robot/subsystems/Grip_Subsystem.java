@@ -27,21 +27,20 @@ public class Grip_Subsystem extends Subsystem {
 	
 	public double[] getX()
 	{
-		double holesY[] = grip.getNumberArray("centerX", this.defaults);
+		final double holesY[] = grip.getNumberArray("centerX", this.defaults);
 		return (this.mult(holesY)) ? holesY : this.defaults;
 	}
 	
 	public double[] getY()
 	{
-		double holesX[] = grip.getNumberArray("centerY", this.defaults);
+		final double holesX[] = grip.getNumberArray("centerY", this.defaults);
 		return (this.mult(holesX)) ? holesX : this.defaults;
 	}
 	
 	public double[] distance()
 	{
-		double objects[] = {0, 0, 0, 0, 0};
-		double distances[] = {0, 0, 0, 0, 0, 0};
-		objects = this.getY();
+		final double objects[] = this.getX();
+		final double distances[] = {0, 0, 0, 0, 0, 0};
 		int num = 0;
 		for(double object : objects)
 		{
@@ -65,9 +64,8 @@ public class Grip_Subsystem extends Subsystem {
 	
 	public double[] fromCenter(double HalfSize)
 	{
-		double objects[] = {0, 0, 0, 0, 0};
-		double distances[] = {0, 0, 0, 0, 0, 0};
-		objects = this.getX();
+		final double objects[] = this.getX();
+		final double distances[] = {0, 0, 0, 0, 0, 0};
 		int num = 0;
 		for(double object : objects)
 		{
@@ -91,13 +89,13 @@ public class Grip_Subsystem extends Subsystem {
 	
 	public double[] area()
 	{
-		double areas[] = grip.getNumberArray("area", this.defaults);
+		final double areas[] = grip.getNumberArray("area", this.defaults);
 		return (this.mult(areas)) ? areas : this.defaults;
 	}
 	
 	public double[] solidity()
 	{
-		double solidities[] = grip.getNumberArray("solidity", this.defaults);
+		final double solidities[] = grip.getNumberArray("solidity", this.defaults);
 		return (this.mult(solidities)) ? solidities : this.defaults;
 	}
 	
@@ -108,7 +106,6 @@ public class Grip_Subsystem extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
 }
 
