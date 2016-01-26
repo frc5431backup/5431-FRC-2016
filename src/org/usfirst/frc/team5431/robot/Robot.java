@@ -1,17 +1,16 @@
 
 package org.usfirst.frc.team5431.robot;
 
-import org.usfirst.frc.team5431.robot.commands.Teleop;
-import org.usfirst.frc.team5431.robot.subsystems.DriveBase;
-import org.usfirst.frc.team5431.robot.subsystems.Intake_Subsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team5431.robot.commands.Shoot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,34 +21,41 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static final DriveBase DriveBase = new DriveBase();
-	public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem();
-	
+	//public static final Turret_Subsystem Turret_Subsystem = new Turret_Subsystem();
 	public static OI oi;
+	
+    Command autonomousCommand, shooter;
+    //SendableChooser chooser;
+    NetworkTable butt;
 
-    Command autonomousCommand;
-    public static Command Intake;
-    SendableChooser chooser;
-    
-    PowerDistributionPanel PDP;
-    
-    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-    	PDP = new PowerDistributionPanel();
-    	PDP.clearStickyFaults();
 		oi = new OI();
-        chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new Teleop());
-//        chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
-        SmartDashboard.putNumber("Temperature", PDP.getTemperature());
-        SmartDashboard.putNumber("Power", PDP.getTotalPower());
+        //chooser = new SendableChooser();
+        shooter = new org.usfirst.frc.team5431.robot.commands.Shoot();
+		//shooter.setRunWhenDisabled(true);
+        shooter.start();
+        //chooser.addDefault("Default Auto", new Shoot());
         
+        //chooser.addObject("My Auto", new MyAutoCommand());
+        //SmartDashboard.putData("Auto mode", chooser);
+        //NetworkTable.setClientMode();
+        //NetworkTable.setIPAddress("10.54.31.20");
+        //butt = NetworkTable.getTable("GRIP/vision");
+        /*
+        USBCamera cam = new USBCamera("cam0");
+        cam.openCamera(); 
+        cam.setFPS(20);
+        cam.setWhiteBalanceAuto();
+        cam.updateSettings(); 
         
+        CameraServer server = CameraServer.getInstance();
+        server.setQuality(40);
+        server.startAutomaticCapture(cam);*/
+        //butt = NetworkTable
     }
 	
 	/**
@@ -75,7 +81,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-        autonomousCommand = (Command) chooser.getSelected();
+        //autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -92,33 +98,15 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-    }
 
-    public void teleopInit() {
-    	
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
+    public void teleopInit()  {
         if (autonomousCommand != null) autonomousCommand.cancel();
+        if (! shooter.isRunning()) shooter.start();
+        shooter.start();
+     
     }
 
-    /**
-     * This function is called periodically during operator control
-     */
-    public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-    }
-    
-    /**
-     * This function is called periodically during test mode
-     */
-    public void testPeriodic() {
-        LiveWindow.run();
-    }
+    public void teleopPeriodic() {Scheduler.getInstance().run();}
+    public void testPeriodic() {LiveWindow.run();}
+    public void autonomousPeriodic() {Scheduler.getInstance().run();}
 }
