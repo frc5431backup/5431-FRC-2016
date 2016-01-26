@@ -35,6 +35,15 @@ public class Shoot extends Command {
 	public static final motorSpeed = 0.15;
 	public static shootSpeed = 0.9;
 	
+	//Choose hole options (Total should be one)
+	private static final double areaNum = 0.2; //how important area is 
+    	private static final double distNum = 0.2; //distance
+    	private static final double solidNum = 0.4; //Solidity
+    	private static final double fromNum = 0.2; //Distance from center of camera
+    	private static double holes[] = {0}; //Don't mess
+	private static double largest = 0; //Don't mess
+	private static int current = 0; //Don't mess
+	
 	
     public Shoot() {
     	try {
@@ -76,67 +85,38 @@ public class Shoot extends Command {
         		SmartDashboard.putNumber("Solidity:", holeSolids[toShoot]);
     			
     			int forback = (vision.withIn(distances[toShoot], minDistance, maxDistance)) ? 0 : 
-    					(distances[toShoot] < minDistance) ? 1 : 2;
+    					(distances[toShoot] < minDistance) ? 1 : 2; //Get which direction to drive
     					
     			int lefight = (vision.withIn(tempCenter, leftTrig, rightTrig)) ? 0 :
-    					(tempCenter < leftTrig) ? 1 : 2;
+    					(tempCenter < leftTrig) ? 1 : 2; //Amount to turn the turrent
     			
-    			boolean Fire = ((forback == 0) && (lefight == 0));
+    			boolean Fire = ((forback == 0) && (lefight == 0)); //If in both them fire
     			
     			if(Fire) {
     				SmartDashboard.putString("FIRE", "YES FIRE!");
     				SmartDashboard.putString("PULL", "YES FIRE!");	
-    				turret.setShoot(shootSpeed);
+    				this.turret.setShoot(shootSpeed); //Set current fly wheel speeds
     			}
     			else {
-    				this.aim(lefight);
-    				SmartDashboard.putString("PULL", ((forback == 0) ? "" : (forback == 1) ? "Drive Back!" : "Drive Forward!"));
+    				this.aim(lefight); //Auto aim onto the target
+    				SmartDashboard.putString("PULL", ((forback == 0) ? "" : (forback == 1) ? "Drive Back!" : "Drive Forward!")); //Display to the dashboard
     				
     			}
-        		
-        		if(vision.withIn(tempCenter, -10, 10) && vision.withIn(distances[toShoot], 100, 144))
-        		{
-        			SmartDashboard.putString("PULL", "YES FIRE!");	
-        			ready += 1;
-        			turret.stopTurn();
-        		}
-        		else if(distances[toShoot] <= 100)
-        		{
-        			SmartDashboard.putString("PULL", "DRIVE THE HELL BACKWARDS!");
-        			turret.stopShoot();
-        		}
-        		else if(distances[toShoot] >= 144)
-        		{
-        			SmartDashboard.putString("PULL", "DRIVE THE HELL FORWARDS!");
-        			turret.stopShoot();
-        		}
-        		else
-        		{
-        			SmartDashboard.putString("PULL", "");
-        		}
-        		
-        		if(ready == 2)
-        		{
-        			turret.setShoot(0.9);
-        		}
-        		
-        	}
-        	else
-        	{
+        	} else { //If returns 666, then hole isn't found
         		SmartDashboard.putString("FIRE", "HOLE NOT FOUND!");
+        		this.turret.stopShoot(); //Stop fly wheels
         	}
     		
-    		}catch(Exception error)
-    		{
-    			SmartDashboard.putString("ERROR", "Error");
-    	}		
-      }
+    	}catch(Exception error) {
+    		SmartDashboard.putString("ERROR", "Error: running forever loop"); //Print to dashboard
+    		}		
+    	}
     }
     
     private void aim(double fromCenter) {
 	if(fromCenter == 2) {
-		this.turret.turnRight(motorSpeed);
-		this.turret.setShoot(shootSpeed);
+		this.turret.turnRight(motorSpeed); //
+		this.turret.setShoot(shootSpeed); //I
 		SmartDashboard.putString("FIRE", "TURN RIGHT!");
 	}
 	else if(fromCenter == 1) {
@@ -152,36 +132,23 @@ public class Shoot extends Command {
     protected boolean isFinished() {
     	vision.stop();
     	stops = false;
-        return false;
+        return (! (stops));
     }
 
     private int chooseHole(int amount, double[] areas, double[] distances, double[] solidity, double[] fromCenter)
     {	
-    	double areaNum = 0.2;
-    	double distNum = 0.2;
-    	double solidNum = 0.4;
-    	double fromNum = 0.2;
-    	
-    	double holes[] = {0, 0, 0, 0};
-    	
     	try
     	{
-	    	for(int now = 0; now < amount; now++)
-	    	{
+	    	for(int now = 0; now < amount; now++) {
 	    		areas[now] = (areas[now] < 0) ? -(areas[now]) : areas[now];
 	    		distances[now] = (distances[now] < 0) ? -(distances[now]) : distances[now];
 	    		solidity[now] = (solidity[now] < 0) ? -(solidity[now]) : solidity[now];
 	    		fromCenter[now] = (fromCenter[now] < 0) ? -(fromCenter[now]) : fromCenter[now];
 	    	}
-    		
-	    	for(int now = 0; now < amount; now++)
-	    	{
+	    	for(int now = 0; now < amount; now++) {
 	    		holes[now] = ((areas[now]/2000) * areaNum) + ((distances[0]/144) * distNum)
 	    		+ ((solidity[0]/100) * solidNum) + ((fromCenter[0]/170) * fromNum);
 	    	}
-	    	
-	    	double largest = 0;
-	    	int current = 0;
 	    	
 	    	
 	    	for(int now = 0; now < holes.length; now++)
