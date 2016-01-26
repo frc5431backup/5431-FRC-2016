@@ -40,9 +40,6 @@ public class Shoot extends Command {
     	private static final double distNum = 0.2; //distance
     	private static final double solidNum = 0.4; //Solidity
     	private static final double fromNum = 0.2; //Distance from center of camera
-    	private static double holes[] = {0}; //Don't mess
-	private static double largest = 0; //Don't mess
-	private static int current = 0; //Don't mess
 	
 	
     public Shoot() {
@@ -140,6 +137,10 @@ public class Shoot extends Command {
     {	
     	try
     	{
+    		double holes[] = {0}; //Don't mess
+		double largest = 0; //Don't mess
+		int current = 0; //Don't mess
+		
     		//If any of the values are negative make sure that they are positive
 	    	for(int now = 0; now < amount; now++) {
 	    		areas[now] = (areas[now] < 0) ? -(areas[now]) : areas[now];
