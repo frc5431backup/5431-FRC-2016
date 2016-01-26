@@ -11,15 +11,15 @@ public class Intake_Subsystem extends Subsystem{
 	
 	public void suck()
 	{
-		suck(1);
+		this.suck(1); //Calling mesthod below, with int as argument
 	}
 	
 	public void suck(int run)
 	{
-		Intake.set(run);	
+		Intake.set(run);
 	}
 	
-	public void stopSucking()
+	public void stopSucking() //Turns off intake system
 	{
 		Intake.set(0);
 	}
