@@ -31,6 +31,9 @@ public class Shoot extends Command {
 	//Pixels to be within to shoot
 	public static final leftTrig = -10;
 	public static final rightTrig = 10;
+	//Speed 0-1 for motor to turn
+	public static final motorSpeed = 0.15;
+	public static shootSpeed = 0.9;
 	
 	
     public Shoot() {
@@ -80,53 +83,16 @@ public class Shoot extends Command {
     			
     			boolean Fire = ((forback == 0) && (lefight == 0));
     			
-    			this.aim(tempCenter);
-    			
-    			
-    			if(Fire)
-    			{
+    			if(Fire) {
     				SmartDashboard.putString("FIRE", "YES FIRE!");
+    				SmartDashboard.putString("PULL", "YES FIRE!");	
+    				turret.setShoot(shootSpeed);
     			}
-        		
-        		/*
-        		int ready = 0; 
-        		
-    			if(vision.withIn(tempCenter, -10, 10) && vision.withIn(distances[toShoot], 100, 144))
-        		{
-        			turret.stopTurn();
-        			ready += 1;
-        		}*/
-        		else if(tempCenter <= -10)
-        		{
-        			turret.stopShoot();
-        			SmartDashboard.putString("FIRE", "TURN LEFT!");
-        			this.aim(tempCenter);
-        			/*
-        			
-        			while(! this.vision.withIn(tempCenter, -10, 10))
-        			{
-        				this.aim(tempCenter);
-        			}
-        			*/
-        			
-        		}
-        		else if(tempCenter >= 10)
-        		{
-        			turret.stopShoot();
-        			SmartDashboard.putString("FIRE", "TURN RIGHT!");
-        			this.aim(tempCenter);
-        			/*
-        			while(! this.vision.withIn(tempCenter, -10, 10))
-        			{
-        				this.aim(tempCenter);
-        			}
-        			*/
-        		}
-        		else
-        		{
-        			SmartDashboard.putString("FIRE", "");
-        			turret.stopTurn();
-        		}
+    			else {
+    				this.aim(lefight);
+    				SmartDashboard.putString("PULL", ((forback == 0) ? "" : (forback == 1) ? "Drive Back!" : "Drive Forward!"));
+    				
+    			}
         		
         		if(vision.withIn(tempCenter, -10, 10) && vision.withIn(distances[toShoot], 100, 144))
         		{
@@ -167,23 +133,20 @@ public class Shoot extends Command {
       }
     }
     
-    private void aim(double fromCenter)
-    {
-		if(fromCenter <= -10)
-		{
-			this.turret.turnRight(0.15);
-			SmartDashboard.putString("NEGATE", "RIGHT");
-		}
-		else if(fromCenter >= 10)
-		{
-			this.turret.turnLeft(0.15);
-			SmartDashboard.putString("NEGATE", "LEFT");
-		}
-		else
-		{
-			this.turret.stopTurn();
-			SmartDashboard.putString("NEGATE", "STOP");
-		}
+    private void aim(double fromCenter) {
+	if(fromCenter == 2) {
+		this.turret.turnRight(motorSpeed);
+		this.turret.setShoot(shootSpeed);
+		SmartDashboard.putString("FIRE", "TURN RIGHT!");
+	}
+	else if(fromCenter == 1) {
+		this.turret.turnLeft(motorSpeed);
+		SmartDashboard.putString("FIRE", "TURN LEFT!");
+	}
+	else if(fromCenter == 0) {
+		this.turret.stopTurn();
+		SmartDashboard.putString("FIRE", "STOP TURNING!");
+	}
     }
     
     protected boolean isFinished() {
