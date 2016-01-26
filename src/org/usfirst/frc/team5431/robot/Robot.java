@@ -25,6 +25,7 @@ public class Robot extends IterativeRobot {
 	public static final DriveBase DriveBase = new DriveBase();
 	public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem();
 	
+	//oi m8
 	public static OI oi;
 
     Command autonomousCommand;
@@ -44,7 +45,6 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new Teleop());
-//        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
         SmartDashboard.putNumber("Temperature", PDP.getTemperature());
         SmartDashboard.putNumber("Power", PDP.getTotalPower());
@@ -77,16 +77,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
         
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
+		
     	
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
