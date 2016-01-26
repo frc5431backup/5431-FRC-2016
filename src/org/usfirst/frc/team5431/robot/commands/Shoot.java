@@ -1,32 +1,36 @@
-
 package org.usfirst.frc.team5431.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.usfirst.frc.team5431.robot.subsystems.Grip_Subsystem;
 import org.usfirst.frc.team5431.robot.subsystems.Turret_Subsystem;
 
-
+/*
+ * This is the Shoot command, that runs a loop until the robot is disabled which calculates 
+ * the current distance away from the tower the horizontal angle and the speed at which to
+ * Shoot the boulder at...
+ */
 
 public class Shoot extends Command {
 	
-	Turret_Subsystem turret;
-	Grip_Subsystem vision;
+	Turret_Subsystem turret; // Subsystem to control the motors for the turret
+	Grip_Subsystem vision; // Subsystem that pulls from NetworkTables and updates values from grip
 	
-	double areas[] = {0, 0, 0, 0};
-	double distances[] = {0, 0, 0, 0};
-	double fromCenters[] = {0, 0, 0, 0};
-	double holeSolids[] = {0, 0, 0, 0};
+	double[] areas = {0};
+	double[] distances = {0};
+	double[] fromCenters = {0};
+	double[] holeSolids = {0};
 	private boolean stops = true;
 	
 	
     public Shoot() {
-    	try
-    	{
+    	try {
     		turret = Turret_Subsystem.getInstance();
     		vision = Grip_Subsystem.getInstance();
-    	} catch(Exception ignored) {/*For the sake of it*/}
+    	} catch(Exception ignored) {
+    		
+    		
+    	}
         requires(turret);
         requires(vision);
     }
@@ -70,6 +74,7 @@ public class Shoot extends Command {
         			SmartDashboard.putString("FIRE", "TURN LEFT!");
         			this.aim(tempCenter);
         			/*
+        			
         			while(! this.vision.withIn(tempCenter, -10, 10))
         			{
         				this.aim(tempCenter);
@@ -206,14 +211,14 @@ public class Shoot extends Command {
     	}
     }
     
-    protected void end() 
-    {
-    	stops = false;
-    }
-
-    protected void interrupted() 
-    {
+    protected void end() {
     	stops = false;
     	vision.stop();
     }
+
+    protected void interrupted() {
+    	stops = false;
+    	vision.stop();
+    }
+
 }
