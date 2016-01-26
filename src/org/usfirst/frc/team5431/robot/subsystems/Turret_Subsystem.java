@@ -17,16 +17,16 @@ public class Turret_Subsystem extends Subsystem {
 	private Turret_Subsystem()
 	{
 		super();
-		this.horiz = new CANTalon(RobotMap.TurnBase);
-		this.left = new CANTalon(RobotMap.LeftFly);
-		this.right = new CANTalon(RobotMap.RightFly);
-		this.horiz.enable();
+		this.horiz = new CANTalon(RobotMap.TurnBase); // Horizontal turning motor
+		this.left = new CANTalon(RobotMap.LeftFly); // Left flywheel motor
+		this.right = new CANTalon(RobotMap.RightFly); // Right flywheel motor
+		this.horiz.enable(); // Automatically called in init, but why not call it again just to make sure
 		this.left.enable();
 		this.right.enable();
-		this.left.clearStickyFaults();
+		this.left.clearStickyFaults(); // Clears any values inside talon from previous executions
 		this.right.clearStickyFaults();
 		this.horiz.clearStickyFaults();
-		this.horiz.enableBrakeMode(true);
+		this.horiz.enableBrakeMode(true); // Brake when no signal received. Prevent backdrive
 		this.left.enableBrakeMode(false);
 		this.right.enableBrakeMode(false);
 	}
@@ -38,29 +38,31 @@ public class Turret_Subsystem extends Subsystem {
 	
 	public void turnLeft(double amount)
 	{
-		this.horiz.set(amount);
+		this.horiz.set(amount); // Turn left at this power
 	}
 	
 	public void turnRight(double amount)
 	{
-		this.horiz.set(-amount);
+		this.horiz.set(-amount); // Turn right at this power
 	}
 	
 	public void stopTurn()
 	{
-		this.horiz.set(0);
+		this.horiz.set(0); // Brake
 		
 	}
 	
 	public void setShoot(double amount)
 	{
+		// Spin up the motors 
 		this.left.set(-(amount));
 		this.right.set(amount);
 	}
 	
 	public void stopShoot()
 	{
-		this.left.set(0);
+		// Brake the shooter
+		this.left.set(0); 
 		this.right.set(0);
 	}
 	
