@@ -6,13 +6,9 @@ import org.usfirst.frc.team5431.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- *
- */
+
 public class Turret_Subsystem extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+
 	
 	private CANTalon horiz, left, right;
 	private static final Turret_Subsystem INSTANCE = new Turret_Subsystem();

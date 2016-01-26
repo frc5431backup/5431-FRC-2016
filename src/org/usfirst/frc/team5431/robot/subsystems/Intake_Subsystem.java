@@ -7,25 +7,24 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake_Subsystem extends Subsystem{
 
-	CANTalon Intake= new CANTalon(RobotMap.intake);
+	final CANTalon Intake= new CANTalon(RobotMap.intake);
 	
-	public void thissucks()
+	public void suck()
 	{
-		Intake.set(1);
+		suck(1);
 	}
 	
-	public void thissucks(int run)
+	public void suck(int run)
 	{
 		Intake.set(run);	
 	}
 	
-	public void stop()
+	public void stopSucking()
 	{
 		Intake.set(0);
 	}
 	
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
 		
 	}
 

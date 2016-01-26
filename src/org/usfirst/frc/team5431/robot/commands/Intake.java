@@ -13,7 +13,7 @@ public class Intake extends Command{
 
 	
 	protected void execute() {
-		Robot.Intake_Subsystem.thissucks();
+		Robot.Intake_Subsystem.suck();
 		
 	}
 
@@ -25,13 +25,13 @@ public class Intake extends Command{
 	
 	protected void end() 
 	{
-		Robot.Intake_Subsystem.thissucks(0);
+		Robot.Intake_Subsystem.suck(0);
 	}
 
 	@Override
 	protected void interrupted() 
 	{
-		Robot.Intake_Subsystem.thissucks(0);
+		Robot.Intake_Subsystem.suck(0);
 	}
 
 }
