@@ -16,58 +16,86 @@ public class Shoot extends Command {
 	Turret_Subsystem turret; // Subsystem to control the motors for the turret
 	Grip_Subsystem vision; // Subsystem that pulls from NetworkTables and updates values from grip
 	
-	double[] areas = {0};
-	double[] distances = {0};
-	double[] fromCenters = {0};
-	double[] holeSolids = {0};
-	private boolean stops = true;
+	//Initial update arrays, they have a single val so we don't get thrown IndexOutOfBounds Error
+	private double[] areas = {0}; //Area for every object
+	private double[] distances = {0}; //Distance from object
+	private double[] fromCenters = {0}; //Pixels from center line negate if to the left
+	private double[] holeSolids = {0}; //How solid an object is (Make sure it's not a blob)
+	private boolean stops = true; //Just in case if interrupted stop the while loop
+	
+	//Edit these values
+	public static final screenHalf = 170; //Just divide the total res 340/2
+	//Area to be within when to shoot
+	public static final minDistance = 90;
+	public static final maxDistance = 144;
+	//Pixels to be within to shoot
+	public static final leftTrig = -10;
+	public static final rightTrig = 10;
 	
 	
     public Shoot() {
     	try {
-    		turret = Turret_Subsystem.getInstance();
-    		vision = Grip_Subsystem.getInstance();
+    		turret = Turret_Subsystem.getInstance(); //Get instance just recalls the class within the subsystem on start
+    		vision = Grip_Subsystem.getInstance(); // To get values from grip aka Network Tables
     	} catch(Exception ignored) {
-    		
-    		
+    		SmartDashboard.putString("ERROR", "Error: Starting subsystems"); //Report back something is wrong
     	}
-        requires(turret);
+        requires(turret); //Use the subsystems in the Command
         requires(vision);
     }
 
-    protected void initialize() 
+    protected void initialize() // Init values like above
     {
-    	turret.setShoot(0.25);
-    	SmartDashboard.putNumber("MOTOR VALUES:", 1);
+    	turret.stopShoot(); //Don't waste battery life
+    	SmartDashboard.putNumber("MOTOR VALUES:", 0); //Show that the motors aren't runninh
     }
 
     protected void execute() 
     {
-    	while(true)
+    	while(stops) //Pretty much run until error occurs
     	{
     		try {
-    		areas = vision.area();
-    		distances = vision.distance();
-    		fromCenters = vision.fromCenter(170); //Half size of
-    		holeSolids = vision.solidity();
-    		int toShoot = this.chooseHole(areas.length, areas, distances, holeSolids, fromCenters);
-    		SmartDashboard.putNumber("Hole Num:", toShoot);
-    		if(toShoot != 666)
+	    		areas = vision.area(); //Get array of all areas
+	    		distances = vision.distance();
+	    		fromCenters = vision.fromCenter(screenHalf); //Get distance away from center the 170 is the current half size of the screen
+	    		holeSolids = vision.solidity();
+	    		int toShoot = this.chooseHole(areas.length, areas, distances, holeSolids, fromCenters); //Chooses an object to shoot at(Method below)
+	    		SmartDashboard.putNumber("Hole Num:", toShoot); //Display to dashboard what to shoot at
+    			
+    			if(toShoot != 666) //Don't shoot at nothing (THE DEVIL)
     		{
-    			double tempCenter = vision.fromCenter(170)[toShoot];
+    			double tempCenter = vision.fromCenter(screenHalf)[toShoot]; //For some weird reason double array pulls the absolute value so we make a temp
+        		
+        		//Display values to SmartDashboard!
         		SmartDashboard.putNumber("Hole area:", areas[toShoot]);
         		SmartDashboard.putNumber("Distance:", distances[toShoot]);
         		SmartDashboard.putNumber("From Center:", tempCenter);
         		SmartDashboard.putNumber("Solidity:", holeSolids[toShoot]);
     			
-        		int ready = 0;
+    			int forback = (vision.withIn(distances[toShoot], minDistance, maxDistance)) ? 0 : 
+    					(distances[toShoot] < minDistance) ? 1 : 2;
+    					
+    			int lefight = (vision.withIn(tempCenter, leftTrig, rightTrig)) ? 0 :
+    					(tempCenter < leftTrig) ? 1 : 2;
+    			
+    			boolean Fire = ((forback == 0) && (lefight == 0));
+    			
+    			this.aim(tempCenter);
+    			
+    			
+    			if(Fire)
+    			{
+    				SmartDashboard.putString("FIRE", "YES FIRE!");
+    			}
+        		
+        		/*
+        		int ready = 0; 
         		
     			if(vision.withIn(tempCenter, -10, 10) && vision.withIn(distances[toShoot], 100, 144))
         		{
-        			SmartDashboard.putString("FIRE", "YES FIRE!");
         			turret.stopTurn();
         			ready += 1;
-        		}
+        		}*/
         		else if(tempCenter <= -10)
         		{
         			turret.stopShoot();
