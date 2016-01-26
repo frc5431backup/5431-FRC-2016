@@ -21,4 +21,8 @@ public class RobotMap {
 	public static int rearright = 2;
 	public static int rearleft = 3;
 	public static int intake = 4;
+	
+	public static final int TurnBase = 2;
+	public static final int LeftFly = 3;
+	public static final int RightFly = 4;
 }

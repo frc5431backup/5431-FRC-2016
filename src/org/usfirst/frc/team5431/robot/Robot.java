@@ -14,16 +14,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
+ * This is 5431's FRC 2016 Stronghold Competition Code. 
+ * This class is run first.
  */
 public class Robot extends IterativeRobot {
 
-	public static final DriveBase DriveBase = new DriveBase();
-	public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem();
+	public static final DriveBase DriveBase = new DriveBase();	//Drive Base subsystem where drivebase motors are defined/used
+	public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem(); //Intake subsystem where intake motors are defined/used
 	
 	//oi m8
 	public static OI oi;
