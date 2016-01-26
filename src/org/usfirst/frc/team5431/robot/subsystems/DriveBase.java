@@ -3,6 +3,7 @@ package org.usfirst.frc.team5431.robot.subsystems;
 
 import org.usfirst.frc.team5431.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -12,17 +13,25 @@ public class DriveBase extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+    private static final DriveBase INSTANCE = new DriveBase();
 	
-    final CANTalon frontright = new CANTalon(RobotMap.frontright),
+    private CANTalon frontright = new CANTalon(RobotMap.frontright),
     		frontleft = new CANTalon(RobotMap.frontleft),
     		rearright = new CANTalon(RobotMap.rearright),
     		rearleft = new CANTalon(RobotMap.rearleft);
-    
-    public void initDefaultCommand() 
+    		
+    private RobotDrive drive;
+    		
+    public DriveBase()
     {
+    	super();
     	
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+    	drive = new RobotDrive(frontleft, rearleft, frontright, rearright);
+    }
+    
+    public static DriveBase getInstance()
+    {
+    	return INSTANCE;
     }
     
     public void enable()
@@ -42,10 +51,9 @@ public class DriveBase extends Subsystem {
     
     public void drive(double left, double right)
     {
-    	frontright.set(right);
-    	rearright.set(right);
-    	frontleft.set(left);
-    	rearleft.set(left);
+    	drive.tankDrive(left, right);
     }
+    
+    public void initDefaultCommand() {}
 }
 
