@@ -115,68 +115,69 @@ public class Shoot extends Command {
     
     private void aim(double fromCenter) {
 	if(fromCenter == 2) {
-		this.turret.turnRight(motorSpeed); //
-		this.turret.setShoot(shootSpeed); //I
+		this.turret.turnRight(motorSpeed); //turn to direction (Right)
+		this.turret.setShoot(shootSpeed); //If in range then get ready to shoot
 		SmartDashboard.putString("FIRE", "TURN RIGHT!");
 	}
 	else if(fromCenter == 1) {
-		this.turret.turnLeft(motorSpeed);
+		this.turret.turnLeft(motorSpeed); //turn to direction (Left)
+		this.turret.setShoot(shootSpeed); //If in range then get ready to shoot
 		SmartDashboard.putString("FIRE", "TURN LEFT!");
 	}
 	else if(fromCenter == 0) {
-		this.turret.stopTurn();
+		this.turret.stopTurn(); //Your freaking there stop
 		SmartDashboard.putString("FIRE", "STOP TURNING!");
 	}
     }
     
     protected boolean isFinished() {
-    	vision.stop();
+    	vision.stop(); 
     	stops = false;
-        return (! (stops));
+        return (! (stops)); //Only return when the loop is done
     }
 
     private int chooseHole(int amount, double[] areas, double[] distances, double[] solidity, double[] fromCenter)
     {	
     	try
     	{
+    		//If any of the values are negative make sure that they are positive
 	    	for(int now = 0; now < amount; now++) {
 	    		areas[now] = (areas[now] < 0) ? -(areas[now]) : areas[now];
 	    		distances[now] = (distances[now] < 0) ? -(distances[now]) : distances[now];
 	    		solidity[now] = (solidity[now] < 0) ? -(solidity[now]) : solidity[now];
 	    		fromCenter[now] = (fromCenter[now] < 0) ? -(fromCenter[now]) : fromCenter[now];
 	    	}
+	    	
+	    	//Calculate the values by multiplying the max values
 	    	for(int now = 0; now < amount; now++) {
-	    		holes[now] = ((areas[now]/2000) * areaNum) + ((distances[0]/144) * distNum)
-	    		+ ((solidity[0]/100) * solidNum) + ((fromCenter[0]/170) * fromNum);
+	    		holes[now] = ((areas[now]/2000) * areaNum) + ((1-(distances[now]/maxDistance)) * distNum)
+	    		+ ((solidity[now]/100) * solidNum) + ((fromCenter[now]/screenHalf) * fromNum);
 	    	}
 	    	
-	    	
-	    	for(int now = 0; now < holes.length; now++)
-	    	{
-	    		if(holes[now] > largest)
-	    		{
+	    	//See which hole was the largest and add that to the current hole
+	    	for(int now = 0; now < holes.length; now++) {
+	    		if(holes[now] > largest) {
 	    			largest = holes[now];
 	    			current = now;
 	    		}
 	    	}
-	    	
 	    	return current;
-	    	
     	}
-    	catch(Exception ignored)
-    	{
-    		return 666;
+    	catch(Exception ignored) {
+    		return 666; //Return 666 which means none found
     	}
     }
     
+    //Close and remove all var
     protected void end() {
     	stops = false;
-    	vision.stop();
+    	vision.stop(); //Stop NetworkTables
     }
 
+    //Called when .cancel is called
     protected void interrupted() {
     	stops = false;
-    	vision.stop();
+    	vision.stop(); //Stop NetworkTables
     }
 
 }
