@@ -8,8 +8,7 @@ public class Intake extends Command{
 
 	
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
 	
@@ -20,21 +19,18 @@ public class Intake extends Command{
 
 	
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	
 	protected void end() 
 	{
-		// TODO Auto-generated method stub
 		Robot.Intake_Subsystem.thissucks(0);
 	}
 
 	@Override
 	protected void interrupted() 
 	{
-		// TODO Auto-generated method stub
 		Robot.Intake_Subsystem.thissucks(0);
 	}
 
