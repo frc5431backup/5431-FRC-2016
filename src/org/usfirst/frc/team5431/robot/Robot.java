@@ -1,12 +1,16 @@
 
 package org.usfirst.frc.team5431.robot;
 
-
+import org.usfirst.frc.team5431.robot.commands.Teleop;
+import org.usfirst.frc.team5431.robot.subsystems.DriveBase;
+import org.usfirst.frc.team5431.robot.subsystems.Intake_Subsystem;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,7 +30,14 @@ public class Robot extends IterativeRobot {
 	
     Command autonomousCommand, shooter;
     //SendableChooser chooser;
+    public static final DriveBase DriveBase = new DriveBase();
+    public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem();
     NetworkTable butt;
+    Command autonomousCommand;
+    public static Command Intake;
+     SendableChooser chooser;
+     
+     PowerDistributionPanel PDP;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -38,6 +49,16 @@ public class Robot extends IterativeRobot {
         shooter = new org.usfirst.frc.team5431.robot.commands.Shoot();
 		//shooter.setRunWhenDisabled(true);
         shooter.start();
+        
+        PDP = new PowerDistributionPanel();
+     	PDP.clearStickyFaults();
+  		oi = new OI();
+         chooser = new SendableChooser();
+         chooser.addDefault("Default Auto", new Teleop());
+         chooser.addObject("My Auto", new MyAutoCommand());
+         SmartDashboard.putData("Auto mode", chooser);
+         SmartDashboard.putNumber("Temperature", PDP.getTemperature());
+         SmartDashboard.putNumber("Power", PDP.getTotalPower());
         //chooser.addDefault("Default Auto", new Shoot());
         
         //chooser.addObject("My Auto", new MyAutoCommand());
