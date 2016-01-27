@@ -11,11 +11,22 @@ import org.usfirst.frc.team5431.robot.commands.Teleop;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	//MAPPING
+	//RB turn Turret right - 6
+	//LB turns Turret left - 5
+	//RT - Axis 2
+	//LT - Axis 3
+	private static int xboxRB = 5;
+	private static int xboxLB = 6;
 	public static int xboxYAxisR = 5;
 	public static int xboxYAxisL = 1;
 	public static int xboxY = 4;
 	public static Joystick xbox = new Joystick(0);
 	public static Button intakeButton = new JoystickButton(xbox, xboxY); 
+	public static Button turnTurretR = new JoystickButton(xbox, xboxRB);
+	public static Button turnTurretL = new JoystickButton(xbox, xboxLB);
+	
+	
 	
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.

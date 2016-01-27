@@ -15,7 +15,8 @@ public class Teleop extends Command {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.DriveBase);
         requires(Robot.Intake_Subsystem);
-        
+        requires(Robot.Turret_Subsystem);
+        requires(Robot.Grip_Subsystem);
     }
 
     // Called just before this Command runs the first time
@@ -26,6 +27,7 @@ public class Teleop extends Command {
     protected void execute() {
     	Robot.DriveBase.drive(OI.xbox.getRawAxis(OI.xboxYAxisL), OI.xbox.getRawAxis(OI.xboxYAxisR));
     	OI.intakeButton.toggleWhenPressed(Robot.Intake);
+    	OI.turnTurretL.whenPressed();
     	
     }
 

@@ -2,8 +2,7 @@
 package org.usfirst.frc.team5431.robot;
 
 import org.usfirst.frc.team5431.robot.commands.Teleop;
-import org.usfirst.frc.team5431.robot.subsystems.DriveBase;
-import org.usfirst.frc.team5431.robot.subsystems.Intake_Subsystem;
+import org.usfirst.frc.team5431.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -21,7 +20,8 @@ public class Robot extends IterativeRobot {
 
 	public static final DriveBase DriveBase = new DriveBase();	//Drive Base subsystem where drivebase motors are defined/used
 	public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem(); //Intake subsystem where intake motors are defined/used
-	
+	public static final Grip_Subsystem Grip_Subsystem = new Grip_Subsystem(); //GRIP subsystem for processing data from GRIP
+	public static final Turret_Subsystem Turret_Subsystem = new Turret_Subsystem(); //Turret subsystem with motors for turret
 	//oi m8
 	public static OI oi;
 

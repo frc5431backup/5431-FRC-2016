@@ -24,16 +24,16 @@ public class Shoot extends Command {
 	private boolean stops = true; //Just in case if interrupted stop the while loop
 	
 	//Edit these values
-	public static final screenHalf = 170; //Just divide the total res 340/2
+	public static final int screenHalf = 170; //Just divide the total res 340/2
 	//Area to be within when to shoot
-	public static final minDistance = 90;
-	public static final maxDistance = 144;
+	public static final int minDistance = 90;
+	public static final  int maxDistance = 144;
 	//Pixels to be within to shoot
-	public static final leftTrig = -10;
-	public static final rightTrig = 10;
+	public static final int leftTrig = -10;
+	public static final int rightTrig = 10;
 	//Speed 0-1 for motor to turn
-	public static final motorSpeed = 0.15;
-	public static shootSpeed = 0.9;
+	public static final double motorSpeed = 0.15;
+	public static double shootSpeed = 0.9;
 	
 	//Choose hole options (Total should be one)
 	private static final double areaNum = 0.2; //how important area is 
