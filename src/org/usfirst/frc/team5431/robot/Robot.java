@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team5431.robot;
 
-import org.usfirst.frc.team5431.robot.commands.Teleop;
+import org.usfirst.frc.team5431.robot.commands.*;
 import org.usfirst.frc.team5431.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -26,6 +26,9 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
     Command autonomousCommand;
+    public static Command _turnTurretL = new _turnTurret(-.25); //A 'subcommand'. Do not seperately from TeleOp or Auton commands
+    public static Command _turnTurretR = new _turnTurret(.25);
+    public static Command _basicShoot; //This is a 'subcommand'. Do Not Use separate from TeleOp and Auto. Actually, this particular one you should NEVER use.
     public static Command Intake;
     SendableChooser chooser;
     
@@ -37,6 +40,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	
     	PDP = new PowerDistributionPanel();
     	PDP.clearStickyFaults();
 		oi = new OI();
@@ -109,4 +113,5 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
+
 }

@@ -25,4 +25,5 @@ public class RobotMap {
 	public static final int TurnBase = 2;
 	public static final int LeftFly = 3;
 	public static final int RightFly = 4;
+	public static final int shootInput = 5;
 }

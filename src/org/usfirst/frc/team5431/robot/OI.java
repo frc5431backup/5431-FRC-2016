@@ -20,9 +20,11 @@ public class OI {
 	private static int xboxLB = 6;
 	public static int xboxYAxisR = 5;
 	public static int xboxYAxisL = 1;
+	public static int xboxA = 1;
 	public static int xboxY = 4;
 	public static Joystick xbox = new Joystick(0);
-	public static Button intakeButton = new JoystickButton(xbox, xboxY); 
+	public static Button intakeButton = new JoystickButton(xbox, xboxA); 
+	public static Button shootButton = new JoystickButton(xbox, xboxY);
 	public static Button turnTurretR = new JoystickButton(xbox, xboxRB);
 	public static Button turnTurretL = new JoystickButton(xbox, xboxLB);
 	

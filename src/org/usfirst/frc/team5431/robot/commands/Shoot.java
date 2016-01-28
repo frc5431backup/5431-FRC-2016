@@ -123,6 +123,7 @@ public class Shoot extends Command {
 	}
 	else if(fromCenter == 0) {
 		this.turret.stopTurn(); //Your freaking there stop
+		this.turret.setShoot(shootSpeed); //Start the motors that should have already been started - unless driver actually aimed right!
 		SmartDashboard.putString("FIRE", "STOP TURNING!");
 	}
     }

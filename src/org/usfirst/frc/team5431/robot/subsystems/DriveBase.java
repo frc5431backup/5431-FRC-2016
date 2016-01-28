@@ -36,10 +36,11 @@ public class DriveBase extends Subsystem {
     
     public void enable()
     {
-    	frontright.enable();
-    	frontleft.enable();
-    	rearright.enable();
-    	rearleft.enable();
+    	
+    	frontright.enableControl();
+    	frontleft.enableControl();
+    	rearright.enableControl();
+    	rearleft.enableControl();
     }
     public void disable()
     {

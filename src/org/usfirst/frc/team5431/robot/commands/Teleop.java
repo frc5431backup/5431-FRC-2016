@@ -27,7 +27,10 @@ public class Teleop extends Command {
     protected void execute() {
     	Robot.DriveBase.drive(OI.xbox.getRawAxis(OI.xboxYAxisL), OI.xbox.getRawAxis(OI.xboxYAxisR));
     	OI.intakeButton.toggleWhenPressed(Robot.Intake);
-    	OI.turnTurretL.whenPressed();
+    	OI.turnTurretL.whenPressed(Robot._turnTurretL);
+    	OI.turnTurretR.whenPressed(Robot._turnTurretR);
+    	OI.shootButton.whenPressed(Robot._basicShoot);
+    	
     	
     }
 
