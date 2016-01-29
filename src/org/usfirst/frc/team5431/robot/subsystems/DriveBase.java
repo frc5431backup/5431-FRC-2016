@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class DriveBase extends Subsystem {
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+	
     private static final DriveBase INSTANCE = new DriveBase();
 	
     private CANTalon frontright = new CANTalon(RobotMap.frontright),

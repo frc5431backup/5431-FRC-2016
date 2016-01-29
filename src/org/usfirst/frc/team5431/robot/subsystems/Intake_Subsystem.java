@@ -9,6 +9,8 @@ public class Intake_Subsystem extends Subsystem{
 
 	final CANTalon Intake= new CANTalon(RobotMap.intake);
 	
+	public static final Intake_Subsystem INSTANCE = new Intake_Subsystem();
+	
 	public void suck()
 	{
 		this.suck(1); //Calling mesthod below, with int as argument
@@ -26,6 +28,11 @@ public class Intake_Subsystem extends Subsystem{
 	
 	protected void initDefaultCommand() {
 		
+	}
+	
+	public Intake_Subsystem getInstance()
+	{
+		return INSTANCE;
 	}
 
 }

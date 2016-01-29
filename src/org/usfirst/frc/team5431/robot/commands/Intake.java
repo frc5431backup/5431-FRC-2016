@@ -1,19 +1,21 @@
 package org.usfirst.frc.team5431.robot.commands;
 
-import org.usfirst.frc.team5431.robot.Robot;
+import org.usfirst.frc.team5431.robot.subsystems.Intake_Subsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class Intake extends Command{
 
+	private Intake_Subsystem intake;
 	
 	protected void initialize() {
-				
+		this.intake = new Intake_Subsystem();
+		requires(this.intake);
 	}
 
 	
 	protected void execute() {
-		Robot.Intake_Subsystem.suck();
+		this.intake.suck();
 		
 	}
 
@@ -25,13 +27,13 @@ public class Intake extends Command{
 	
 	protected void end() 
 	{
-		Robot.Intake_Subsystem.suck(0);
+		this.intake.suck(0);
 	}
 
 	@Override
 	protected void interrupted() 
 	{
-		Robot.Intake_Subsystem.suck(0);
+		this.intake.suck(0);
 	}
 
 }

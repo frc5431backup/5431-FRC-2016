@@ -4,18 +4,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import org.usfirst.frc.team5431.robot.commands.Teleop;
-
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	public static int xboxYAxisR = 5;
-	public static int xboxYAxisL = 1;
-	public static int xboxY = 4;
-	public static Joystick xbox = new Joystick(0);
-	public static Button intakeButton = new JoystickButton(xbox, xboxY); 
+	public static int joyLeftY = 5;
+	public static int joyRightY = 1;
+	public static int joyYbutton = 4;
+	
+	public static Joystick joy = new Joystick(0);
+	public static Button intakeButton = new JoystickButton(joy, joyYbutton); 
+		
 	
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.

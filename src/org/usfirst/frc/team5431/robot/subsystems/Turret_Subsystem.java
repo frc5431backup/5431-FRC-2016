@@ -14,7 +14,7 @@ public class Turret_Subsystem extends Subsystem {
 	private static final Turret_Subsystem INSTANCE = new Turret_Subsystem();
 	
 	
-	private Turret_Subsystem()
+	public Turret_Subsystem()
 	{
 		super();
 		this.horiz = new CANTalon(RobotMap.TurnBase); // Horizontal turning motor

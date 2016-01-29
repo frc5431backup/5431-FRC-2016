@@ -2,7 +2,6 @@ package org.usfirst.frc.team5431.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Grip_Subsystem extends Subsystem {
     
