@@ -53,6 +53,10 @@ public class DriveBase extends Subsystem {
     public void drive(double left, double right)
     {
     	drive.tankDrive(left, right);
+    	frontright.set(right);
+    	frontleft.set(left);
+    	rearright.set(right);
+    	rearleft.set(left);
     }
     
     public void initDefaultCommand() {}

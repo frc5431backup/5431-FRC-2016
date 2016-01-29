@@ -16,7 +16,7 @@ public class Teleop extends Command {
         requires(Robot.DriveBase);
         requires(Robot.Intake_Subsystem);
         requires(Robot.Turret_Subsystem);
-        requires(Robot.Grip_Subsystem);
+        //requires(Robot.Grip_Subsystem);
     }
 
     // Called just before this Command runs the first time

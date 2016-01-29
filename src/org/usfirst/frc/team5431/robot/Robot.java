@@ -20,12 +20,13 @@ public class Robot extends IterativeRobot {
 
 	public static final DriveBase DriveBase = new DriveBase();	//Drive Base subsystem where drivebase motors are defined/used
 	public static final Intake_Subsystem Intake_Subsystem = new Intake_Subsystem(); //Intake subsystem where intake motors are defined/used
-	public static final Grip_Subsystem Grip_Subsystem = new Grip_Subsystem(); //GRIP subsystem for processing data from GRIP
+	//public static final Grip_Subsystem Grip_Subsystem = new Grip_Subsystem(); //GRIP subsystem for processing data from GRIP
 	public static final Turret_Subsystem Turret_Subsystem = new Turret_Subsystem(); //Turret subsystem with motors for turret
 	//oi m8
 	public static OI oi;
 
     Command autonomousCommand;
+    Command teleopCommand;
     public static Command _turnTurretL = new _turnTurret(-.25); //A 'subcommand'. Do not seperately from TeleOp or Auton commands
     public static Command _turnTurretR = new _turnTurret(.25);
     public static Command _basicShoot; //This is a 'subcommand'. Do Not Use separate from TeleOp and Auto. Actually, this particular one you should NEVER use.
@@ -92,12 +93,14 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	
+    	teleopCommand = (Command) chooser.getSelected();
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        if (teleopCommand != null) teleopCommand.start();
+        
     }
 
     /**
