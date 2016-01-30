@@ -41,7 +41,7 @@ public final class Robot extends IterativeRobot {
 	 * <p>
 	 * The current command, as referenced by this variable, is called during autonomous. As the robot encounters new obstacles or problems, the command changes to accomodate it.
 	 * */
-	public static Command autonomousCommand
+	public static Command autonomousCommand;
 	
 	/**
 	 * {@link Command} reference for the intake code.
