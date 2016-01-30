@@ -2,6 +2,11 @@ package org.usfirst.frc.team5431.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Currently unused command that is going to be autonomous.
+ * @deprecated See {@link Robot#autonomousInit}
+ * */
+ @Deprecated
 public class Auton extends Command{
 
 
