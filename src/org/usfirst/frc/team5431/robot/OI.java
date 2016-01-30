@@ -7,14 +7,34 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
+ * 
+ * @see Robot
+ * @deprecated David should have used it, but didn't. Instead defined his own constants in {@link Intake_Subsystem} and {@link Turret_Subsystem}
  */
+ @Deprecated
 public class OI {
-	public static int joyLeftY = 5;
-	public static int joyRightY = 1;
-	public static int joyYbutton = 4;
+		/**
+	 * Constant that defines which {@link Button] to use which currently serves no purpose.
+	 * */
+	public static final int joyLeftY = 5;
+	/**
+	 * Constant that defines which {@link Button] to use which currently serves no purpose.
+	 * */
+	public static final int joyRightY = 1;
+	/**
+	 * Constant that defines which {@link Button} of {@link Joystick} powers the intake. Used in {@link OI#intakeButton}.
+	 * */
+	public static final int joyYbutton = 4;
 	
-	public static Joystick joy = new Joystick(0);
-	public static Button intakeButton = new JoystickButton(joy, joyYbutton); 
+	/**
+	 * {@link Joystick} instance that handles how fast the robot will shoot. Bound to channel 0.
+	 * */
+	public static final Joystick joy = new Joystick(0);
+	
+	/**
+	 * Constant {@link Button} that controls the intake. Uses {@link OI#joy} and {@link OI#joyYbutton} in it's constructor.
+	 * */
+	public static final Button intakeButton = new JoystickButton(joy, joyYbutton); 
 		
 	
     //// CREATING BUTTONS
