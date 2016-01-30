@@ -44,6 +44,7 @@ public class Intake extends Command{
 	{
 		finished=true;
 		this.intake.suck(0);
+		
 	}
 
 	/**

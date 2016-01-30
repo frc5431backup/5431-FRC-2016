@@ -59,6 +59,8 @@ public final class RobotMap {
 	 * @see Button
 	 * @see Joystick
 	 * */
+	
+	//Not used currently (Depreciated)
 	public static final int TurnBase = 7;
 		/**
 	 * Constant with the button ID that powers the left flywheel

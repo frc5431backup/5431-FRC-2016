@@ -23,7 +23,6 @@ public class DriveBase extends Subsystem {
     public DriveBase()
     {
     	super();
-    	
     	drive = new RobotDrive(frontleft, rearleft, frontright, rearright);
     }
     
