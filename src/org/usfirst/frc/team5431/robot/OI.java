@@ -7,18 +7,23 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
+ * <p>
+ * Contains various constants for user input.
  * 
+ * @see RobotMap
  * @see Robot
- * @deprecated David should have used it, but didn't. Instead defined his own constants in {@link Intake_Subsystem} and {@link Turret_Subsystem}
- */
- @Deprecated
+ * */
 public class OI {
 		/**
-	 * Constant that defines which {@link Button] to use which currently serves no purpose.
+	 * Constant that defines the ID for the left, vertical {@link Button] on {@link #joy}. Currently {@value #joyLeftY}.
+	 * 
+	 * @see Robot
 	 * */
 	public static final int joyLeftY = 5;
-	/**
-	 * Constant that defines which {@link Button] to use which currently serves no purpose.
+		/**
+	 * Constant that defines the ID for the left, vertical {@link Button] on {@link #joy}. Currently {@value #joyLeftY}.
+	 * 
+	 * @see Robot
 	 * */
 	public static final int joyRightY = 1;
 	/**
