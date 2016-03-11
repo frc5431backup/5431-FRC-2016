@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import org.usfirst.frc.team5431.robot.commands.Teleop;
+//import org.usfirst.frc.team5431.robot.commands.Teleop;
 
 /**
  * This class is the glue that binds the controls on the physical operator

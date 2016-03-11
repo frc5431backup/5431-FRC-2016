@@ -4,6 +4,7 @@ package org.usfirst.frc.team5431.robot.subsystems;
 import org.usfirst.frc.team5431.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -15,18 +16,21 @@ public class DriveBase extends Subsystem {
     // here. Call these from Commands.
     private static final DriveBase INSTANCE = new DriveBase();
 	
-    private CANTalon frontright = new CANTalon(RobotMap.frontright),
+    public CANTalon frontright = new CANTalon(RobotMap.frontright),
     		frontleft = new CANTalon(RobotMap.frontleft),
-    		rearright = new CANTalon(RobotMap.rearright),
-    		rearleft = new CANTalon(RobotMap.rearleft);
-    		
-    private RobotDrive drive;
+    		rearright = new CANTalon(RobotMap.rearright);
+    		//rearleft = new CANTalon(RobotMap.rearleft);
+    public Victor rearleft = new Victor(9);
+    //private RobotDrive drive;
     		
     public DriveBase()
     {
     	super();
-    	
-    	drive = new RobotDrive(frontleft, rearleft, frontright, rearright);
+    	frontleft.setSafetyEnabled(false);
+    	frontright.setSafetyEnabled(false);
+    	rearleft.setSafetyEnabled(false);
+    	rearright.setSafetyEnabled(false);
+    	//drive = new RobotDrive(frontleft, rearleft, frontright, rearright);
     }
     
     public static DriveBase getInstance()
@@ -40,7 +44,7 @@ public class DriveBase extends Subsystem {
     	frontright.enableControl();
     	frontleft.enableControl();
     	rearright.enableControl();
-    	rearleft.enableControl();
+    	//rearleft.enableControl();
     }
     public void disable()
     {
@@ -52,7 +56,7 @@ public class DriveBase extends Subsystem {
     
     public void drive(double left, double right)
     {
-    	drive.tankDrive(left, right);
+    	//drive.tankDrive(left, right);
     	frontright.set(right);
     	frontleft.set(left);
     	rearright.set(right);

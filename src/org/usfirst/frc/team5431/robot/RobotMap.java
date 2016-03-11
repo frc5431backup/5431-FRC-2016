@@ -16,10 +16,10 @@ public class RobotMap {
     // public static int rangefinderPort = 1;
     // public static int rangefinderModule = 1;
 	
-	public static int frontright = 1;
-	public static int frontleft = 2;
-	public static int rearright = 3;
-	public static int rearleft = 4;
+	public static int frontright = 3;
+	public static int frontleft = 4;
+	public static int rearright = 5;
+	public static int rearleft = 2;
 	public static int intake = 0; //PWM Input
 	
 	//public static final int TurnBase = 2;

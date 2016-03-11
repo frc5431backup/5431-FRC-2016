@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake_Subsystem extends Subsystem{
 
-	final Victor Intake= new Victor(RobotMap.intake);
+	private Victor Intake = new Victor(RobotMap.intake);
 	
 	public void suck()
 	{
 		this.suck(1); //Calling mesthod below, with int as argument
 	}
 	
-	public void suck(int run)
+	public void suck(double run)
 	{
 		Intake.set(run);
 	}

@@ -1,4 +1,4 @@
-
+/*
 package org.usfirst.frc.team5431.robot.subsystems;
 
 import org.usfirst.frc.team5431.robot.RobotMap;
@@ -17,7 +17,8 @@ public class Turret_Subsystem extends Subsystem {
 	public Turret_Subsystem()
 	{
 		super();
-		this.horiz = new CANTalon(RobotMap.TurnBase); // Horizontal turning motor
+		
+		//this.horiz = new CANTalon(RobotMap.TurnBase); // Horizontal turning motor
 		this.left = new CANTalon(RobotMap.LeftFly); // Left flywheel motor
 		this.right = new CANTalon(RobotMap.RightFly); // Right flywheel motor
 		this.horiz.enable(); // Automatically called in init, but why not call it again just to make sure
@@ -38,17 +39,17 @@ public class Turret_Subsystem extends Subsystem {
 	
 	public void turnLeft(double amount)
 	{
-		this.horiz.set(amount); // Turn left at this power
+		//this.horiz.set(amount); // Turn left at this power
 	}
 	
 	public void turnRight(double amount)
 	{
-		this.horiz.set(-amount); // Turn right at this power
+		//this.horiz.set(-amount); // Turn right at this power
 	}
 	
 	public void stopTurn()
 	{
-		this.horiz.set(0); // Brake
+		//this.horiz.set(0); // Brake
 		
 	}
 	
@@ -71,4 +72,4 @@ public class Turret_Subsystem extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
 }
-
+*/
